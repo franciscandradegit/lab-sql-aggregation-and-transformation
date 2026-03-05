@@ -22,7 +22,8 @@ FROM sakila.rental;
 SELECT *, 
 	MONTH(rental_date) AS 'month',
     DAYNAME(rental_date) AS 'day'
-FROM sakila.rental;
+FROM sakila.rental
+LIMIT 20;
 
 -- 2.3 Bonus: Retrieve rental information and add an additional column called DAY_TYPE with values 'weekend' or 'workday', depending on the day of the week. Hint: use a conditional expression.
 SELECT *, 
@@ -67,15 +68,17 @@ ORDER BY COUNT(film_id) DESC;
 -- 2.1 The mean film duration for each rating, and sort the results in descending order of the mean duration. Round off the average lengths to two decimal places. This will help identify popular movie lengths for each category.
 SELECT * FROM sakila.film;
 
-SELECT AVG(length), rating FROM sakila.film
+SELECT ROUND(AVG(length),2), rating FROM sakila.film
 GROUP BY rating
 ORDER BY AVG(length) DESC;
 
 -- 2.2 Identify which ratings have a mean duration of over two hours in order to help select films for customers who prefer longer movies.
-SELECT AVG(length), rating FROM sakila.film
+SELECT ROUND(AVG(length),2), rating FROM sakila.film
 GROUP BY rating
 HAVING AVG(length) > 120
 ORDER BY AVG(length) DESC;
 
 -- 3. Bonus: determine which last names are not repeated in the table actor.
-SELECT DISTINCT(last_name) AS not_repeated FROM sakila.actor;
+SELECT last_name AS not_repeated FROM sakila.actor
+GROUP BY last_name
+HAVING COUNT(*) = 1;
